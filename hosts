@@ -1,0 +1,6 @@
+[linux]
+[host ip addresses]
+
+[all:vars]
+ansible_connection=ssh
+ansible_user=[user name]
