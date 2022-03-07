@@ -1,0 +1,25 @@
+---
+
+- name: AmpInstall
+  hosts: linux
+
+  tasks:
+    - name: Check if my_package is installed
+      command: dpkg-query -W amp_Server_ubuntu-20-04.deb
+      register: my_package_check_deb
+      failed_when: my_package_check_deb.rc > 1
+      changed_when: my_package_check_deb.rc == 1
+    - name: Create Downloads folder
+      file:
+        path: ~/Downloads
+        mode: 0755
+        state: directory
+    - name: Download my_package
+      become: true
+      copy:
+        src: [local filename and location]
+        dest: /home/[username]/Downloads/ampInstaller.deb
+      when: my_package_check_deb.rc == 1
+    - name: Install my_package
+      become: true
+      command: dpkg -i /home/[username]/Downloads/ampInstaller.deb
